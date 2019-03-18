@@ -51,6 +51,8 @@ import org.elasticsearch.indices.breaker.CircuitBreakerService;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TcpChannel;
 import org.elasticsearch.transport.netty4.Netty4Transport;
+import org.elasticsearch.Version;
+import org.elasticsearch.common.network.CloseableChannel;
 
 import com.amazon.opendistroforelasticsearch.security.ssl.OpenDistroSecurityKeyStore;
 import com.amazon.opendistroforelasticsearch.security.ssl.SslExceptionHandler;
@@ -72,8 +74,8 @@ public class OpenDistroSecuritySSLNettyTransport extends Netty4Transport {
     private final SslExceptionHandler errorHandler;
 
     public OpenDistroSecuritySSLNettyTransport(final Settings settings, final Version version, final ThreadPool threadPool, final NetworkService networkService,
-        final PageCacheRecycler pageCacheRecycler, final NamedWriteableRegistry namedWriteableRegistry,
-        final CircuitBreakerService circuitBreakerService, final OpenDistroSecurityKeyStore sgks, final SslExceptionHandler errorHandler) {
+            final PageCacheRecycler pageCacheRecycler, final NamedWriteableRegistry namedWriteableRegistry,
+            final CircuitBreakerService circuitBreakerService, final OpenDistroSecurityKeyStore sgks, final SslExceptionHandler errorHandler) {
         super(settings, version, threadPool, networkService, pageCacheRecycler, namedWriteableRegistry, circuitBreakerService);
         this.sgks = sgks;
         this.errorHandler = errorHandler;

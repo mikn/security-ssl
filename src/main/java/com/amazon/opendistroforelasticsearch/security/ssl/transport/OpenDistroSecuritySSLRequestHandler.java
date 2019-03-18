@@ -30,6 +30,8 @@
 
 package com.amazon.opendistroforelasticsearch.security.ssl.transport;
 
+import io.netty.handler.ssl.SslHandler;
+
 import java.lang.reflect.Method;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
@@ -56,11 +58,7 @@ import com.amazon.opendistroforelasticsearch.security.ssl.SslExceptionHandler;
 import com.amazon.opendistroforelasticsearch.security.ssl.util.ExceptionUtils;
 import com.amazon.opendistroforelasticsearch.security.ssl.util.SSLRequestHelper;
 
-import io.netty.handler.ssl.SslHandler;
-
-public class OpenDistroSecuritySSLRequestHandler<T extends TransportRequest>
-implements TransportRequestHandler<T> {
-    
+public class OpenDistroSecuritySSLRequestHandler<T extends TransportRequest> implements TransportRequestHandler<T> {
     private final String action;
     private final TransportRequestHandler<T> actualHandler;
     private final ThreadPool threadPool;
@@ -68,8 +66,9 @@ implements TransportRequestHandler<T> {
     private final PrincipalExtractor principalExtractor;
     private final SslExceptionHandler errorHandler;
 
-    public OpenDistroSecuritySSLRequestHandler(String action, TransportRequestHandler<T> actualHandler, 
-            ThreadPool threadPool, final PrincipalExtractor principalExtractor, final SslExceptionHandler errorHandler) {
+    public OpenDistroSecuritySSLRequestHandler(String action, TransportRequestHandler<T> actualHandler,
+            ThreadPool threadPool, final PrincipalExtractor principalExtractor,
+            final SslExceptionHandler errorHandler) {
         super();
         this.action = action;
         this.actualHandler = actualHandler;
@@ -77,12 +76,12 @@ implements TransportRequestHandler<T> {
         this.principalExtractor = principalExtractor;
         this.errorHandler = errorHandler;
     }
-    
+
     protected ThreadContext getThreadContext() {
-        if(threadPool == null) {
+        if (threadPool == null) {
             return null;
         }
-        
+
         return threadPool.getThreadContext();
     }
 
@@ -184,13 +183,15 @@ implements TransportRequestHandler<T> {
         }
         
     }
-    
-    protected void addAdditionalContextValues(final String action, final TransportRequest request, final X509Certificate[] localCerts, final X509Certificate[] peerCerts, final String principal)
+
+    protected void addAdditionalContextValues(final String action, final TransportRequest request,
+            final X509Certificate[] localCerts, final X509Certificate[] peerCerts, final String principal)
             throws Exception {
         // no-op
     }
-    
-    protected void messageReceivedDecorate(final T request, final TransportRequestHandler<T> actualHandler, final TransportChannel transportChannel, Task task) throws Exception {
+
+    protected void messageReceivedDecorate(final T request, final TransportRequestHandler<T> actualHandler,
+            final TransportChannel transportChannel, Task task) throws Exception {
         actualHandler.messageReceived(request, transportChannel, task);
     }
 }

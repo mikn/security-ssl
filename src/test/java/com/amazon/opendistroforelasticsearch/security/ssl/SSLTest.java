@@ -372,7 +372,7 @@ public class SSLTest extends AbstractUnitTest {
         } catch (Exception e1) {
             Throwable e = ExceptionUtils.getRootCause(e1);
             Assert.assertTrue(e.toString(), e.toString().contains("no valid cipher"));
-       }
+        }
     }
 
     @Test
